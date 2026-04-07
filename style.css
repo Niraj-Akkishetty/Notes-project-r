@@ -1,0 +1,776 @@
+/* ═══════════════════════════════════════════════════════
+   Google Keep Inspired Notes App — Dark Premium Theme
+   ═══════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ── CSS Custom Properties ──────────────────────────── */
+:root {
+    --bg-primary: #1a1a2e;
+    --bg-secondary: #16213e;
+    --bg-card: #1e293b;
+    --bg-card-hover: #253449;
+    --bg-input: #0f172a;
+    --bg-modal-overlay: rgba(0, 0, 0, 0.65);
+
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+
+    --accent: #6c63ff;
+    --accent-hover: #5b52e0;
+    --accent-glow: rgba(108, 99, 255, 0.25);
+
+    --danger: #ef4444;
+    --danger-hover: #dc2626;
+
+    --border: rgba(148, 163, 184, 0.12);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 14px rgba(0,0,0,0.35);
+    --shadow-lg: 0 10px 30px rgba(0,0,0,0.5);
+
+    --radius-sm: 8px;
+    --radius: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+
+    /* Note Colors — Google Keep Inspired */
+    --note-default: #1e293b;
+    --note-coral: #77172e;
+    --note-peach: #692b17;
+    --note-sand: #7c4a03;
+    --note-mint: #0c625d;
+    --note-sage: #2d6a4f;
+    --note-fog: #256377;
+    --note-storm: #284255;
+    --note-dusk: #472e5b;
+    --note-blossom: #6c394f;
+    --note-clay: #4b443a;
+    --note-chalk: #323e4f;
+}
+
+/* ── Reset & Base ───────────────────────────────────── */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Animated gradient background */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(108, 99, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.04) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ── Scrollbar ──────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+    background: var(--text-muted);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+/* ── Header / Navbar ────────────────────────────────── */
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(22, 33, 62, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+}
+
+.header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    gap: 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.logo-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--accent), #818cf8);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 2px 10px var(--accent-glow);
+}
+
+.logo-text {
+    font-size: 20px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #e2e8f0, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+}
+
+/* ── Search Bar ─────────────────────────────────────── */
+.search-wrapper {
+    flex: 1;
+    max-width: 600px;
+    position: relative;
+}
+
+.search-bar {
+    width: 100%;
+    padding: 10px 16px 10px 44px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.search-bar::placeholder {
+    color: var(--text-muted);
+}
+
+.search-bar:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+    background: rgba(15, 23, 42, 0.9);
+}
+
+.search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 16px;
+    pointer-events: none;
+    transition: color 0.3s ease;
+}
+
+.search-bar:focus ~ .search-icon {
+    color: var(--accent);
+}
+
+.note-count {
+    font-size: 13px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    font-weight: 500;
+}
+
+/* ── Main Content ───────────────────────────────────── */
+.main {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+/* ── Create Note Area ───────────────────────────────── */
+.create-note-area {
+    max-width: 640px;
+    margin: 0 auto 40px;
+}
+
+.create-note-collapsed {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 20px;
+    cursor: text;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.create-note-collapsed:hover {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-md), 0 0 0 1px var(--accent-glow);
+    transform: translateY(-1px);
+}
+
+.create-note-collapsed span {
+    color: var(--text-muted);
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.create-note-collapsed .create-icons {
+    display: flex;
+    gap: 8px;
+}
+
+.create-note-collapsed .create-icons button {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 50%;
+    font-size: 18px;
+    transition: all 0.2s ease;
+}
+
+.create-note-collapsed .create-icons button:hover {
+    background: rgba(255,255,255,0.06);
+    color: var(--text-primary);
+}
+
+/* Expanded create form */
+.create-note-expanded {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0;
+    box-shadow: var(--shadow-lg);
+    display: none;
+    overflow: hidden;
+    animation: slideDown 0.25s ease;
+}
+
+.create-note-expanded.active {
+    display: block;
+}
+
+.create-note-collapsed.hidden {
+    display: none;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.create-note-expanded input,
+.create-note-expanded textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-family: inherit;
+    padding: 14px 20px;
+    outline: none;
+    resize: none;
+}
+
+.create-note-expanded input {
+    font-size: 16px;
+    font-weight: 600;
+    padding-bottom: 4px;
+}
+
+.create-note-expanded input::placeholder {
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.create-note-expanded textarea {
+    font-size: 14px;
+    min-height: 80px;
+    padding-top: 4px;
+    line-height: 1.7;
+}
+
+.create-note-expanded textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.create-note-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-top: 1px solid var(--border);
+}
+
+.create-note-footer .color-dots {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.color-dot {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.color-dot:hover {
+    transform: scale(1.15);
+}
+
+.color-dot.active {
+    border-color: var(--text-primary);
+}
+
+.color-dot.active::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.color-dot[data-color="default"]  { background: var(--note-default); border-color: var(--text-muted); }
+.color-dot[data-color="coral"]    { background: var(--note-coral); }
+.color-dot[data-color="peach"]    { background: var(--note-peach); }
+.color-dot[data-color="sand"]     { background: var(--note-sand); }
+.color-dot[data-color="mint"]     { background: var(--note-mint); }
+.color-dot[data-color="sage"]     { background: var(--note-sage); }
+.color-dot[data-color="fog"]      { background: var(--note-fog); }
+.color-dot[data-color="storm"]    { background: var(--note-storm); }
+.color-dot[data-color="dusk"]     { background: var(--note-dusk); }
+.color-dot[data-color="blossom"]  { background: var(--note-blossom); }
+.color-dot[data-color="clay"]     { background: var(--note-clay); }
+.color-dot[data-color="chalk"]    { background: var(--note-chalk); }
+
+.create-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent), #818cf8);
+    color: #fff;
+    box-shadow: 0 2px 8px var(--accent-glow);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--accent-hover), #6366f1);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px var(--accent-glow);
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+}
+
+.btn-ghost:hover {
+    background: rgba(255,255,255,0.06);
+    color: var(--text-primary);
+}
+
+/* ── Section Labels ─────────────────────────────────── */
+.section-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    padding-left: 4px;
+}
+
+/* ── Notes Grid ─────────────────────────────────────── */
+.notes-section {
+    margin-bottom: 32px;
+}
+
+.notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+/* ── Note Card ──────────────────────────────────────── */
+.note-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: fadeInUp 0.35s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 100px;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(12px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.note-card:hover {
+    border-color: rgba(148, 163, 184, 0.25);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.note-card.removing {
+    animation: fadeOutDown 0.3s ease forwards;
+}
+
+@keyframes fadeOutDown {
+    to { opacity: 0; transform: translateY(12px) scale(0.95); }
+}
+
+/* Note color backgrounds */
+.note-card[data-color="default"]  { background: var(--note-default); }
+.note-card[data-color="coral"]    { background: var(--note-coral); }
+.note-card[data-color="peach"]    { background: var(--note-peach); }
+.note-card[data-color="sand"]     { background: var(--note-sand); }
+.note-card[data-color="mint"]     { background: var(--note-mint); }
+.note-card[data-color="sage"]     { background: var(--note-sage); }
+.note-card[data-color="fog"]      { background: var(--note-fog); }
+.note-card[data-color="storm"]    { background: var(--note-storm); }
+.note-card[data-color="dusk"]     { background: var(--note-dusk); }
+.note-card[data-color="blossom"]  { background: var(--note-blossom); }
+.note-card[data-color="clay"]     { background: var(--note-clay); }
+.note-card[data-color="chalk"]    { background: var(--note-chalk); }
+
+.note-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.note-content {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    flex: 1;
+    word-break: break-word;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    line-clamp: 8;
+    -webkit-box-orient: vertical;
+    white-space: pre-wrap;
+}
+
+.note-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.note-date {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.note-actions {
+    display: flex;
+    gap: 2px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.note-card:hover .note-actions {
+    opacity: 1;
+}
+
+.note-action-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 5px 7px;
+    border-radius: 50%;
+    font-size: 15px;
+    transition: all 0.2s ease;
+    line-height: 1;
+}
+
+.note-action-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--text-primary);
+}
+
+.note-action-btn.pin-btn.pinned {
+    color: var(--accent);
+}
+
+.note-action-btn.delete-btn:hover {
+    color: var(--danger);
+    background: rgba(239, 68, 68, 0.12);
+}
+
+/* ── Edit Modal ─────────────────────────────────────── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg-modal-overlay);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.2s ease;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 600px;
+    max-height: 85vh;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes modalIn {
+    from { opacity: 0; transform: scale(0.92) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-body {
+    padding: 0;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-body input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 20px 24px 8px;
+    outline: none;
+}
+
+.modal-body input::placeholder {
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.modal-body textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 14px;
+    padding: 8px 24px 20px;
+    outline: none;
+    resize: none;
+    min-height: 160px;
+    line-height: 1.7;
+}
+
+.modal-body textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.modal-footer .color-dots {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 6px;
+}
+
+/* ── Empty State ────────────────────────────────────── */
+.empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    animation: fadeIn 0.5s ease;
+}
+
+.empty-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.4;
+}
+
+.empty-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.empty-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+/* ── Toast Notifications ────────────────────────────── */
+.toast-container {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+}
+
+.toast {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 20px;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: var(--shadow-lg);
+    animation: toastIn 0.3s ease, toastOut 0.3s ease 2.5s forwards;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+@keyframes toastIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes toastOut {
+    to { opacity: 0; transform: translateY(10px); }
+}
+
+/* ── Responsive Design ──────────────────────────────── */
+@media (max-width: 768px) {
+    .header-inner {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 12px 0;
+        gap: 10px;
+    }
+
+    .search-wrapper {
+        order: 3;
+        max-width: 100%;
+        flex-basis: 100%;
+    }
+
+    .note-count {
+        order: 2;
+    }
+
+    .notes-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 10px;
+    }
+
+    .main {
+        padding: 16px;
+    }
+
+    .create-note-area {
+        margin-bottom: 28px;
+    }
+
+    .modal {
+        max-height: 90vh;
+        border-radius: var(--radius);
+    }
+}
+
+@media (max-width: 480px) {
+    .notes-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .logo-text {
+        font-size: 17px;
+    }
+
+    .header {
+        padding: 0 14px;
+    }
+}
